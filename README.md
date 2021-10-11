@@ -1,2 +1,4 @@
-# AndroidPackageManager
 Android包管理
+=====
+
+这是一个适合于开发人员使用的包管理器
