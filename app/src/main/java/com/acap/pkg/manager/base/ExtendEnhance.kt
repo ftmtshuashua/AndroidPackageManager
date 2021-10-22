@@ -26,15 +26,17 @@ fun <T> MutableList<T>.replace(index: Int, t: T): List<T> {
     this.add(index, t)
     return this
 }
+
 /** 浅拷贝 */
 fun <T> List<T>.clone() = mutableListOf(this)
 
 //-------------------------------- 样式
 
 /** Recycler样式配置 */
-fun RecyclerView.setStyle_LinearVertical() {
+fun RecyclerView.setStyle_LinearVertical(): RecyclerView {
     this.layoutManager = LinearLayoutManager(context)
     this.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    return this
 }
 
 

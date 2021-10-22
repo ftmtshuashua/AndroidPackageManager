@@ -2,6 +2,7 @@ package com.acap.pkg.manager
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.acap.pkg.manager.adapter.MultipleViewModel
 import com.acap.pkg.manager.adapter.child.VH_Uninstall
@@ -14,6 +15,7 @@ import com.acap.pkg.manager.center.ActivityRecordUninstall
 import com.acap.pkg.manager.center.DriverManager
 import com.acap.toolkit.log.LogUtils
 import com.weather.utils.adapter.MultipleRecyclerViewAdapter
+import java.lang.Exception
 
 
 /**
@@ -27,6 +29,7 @@ import com.weather.utils.adapter.MultipleRecyclerViewAdapter
 class UninstallActivity : BaseActivity() {
 
     val mAdapter by lazy { MultipleRecyclerViewAdapter<MultipleViewModel>() }
+    val mRecyclerView by lazy { findViewById<RecyclerView>(R.id.view_RecyclerView).setStyle_LinearVertical() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +37,6 @@ class UninstallActivity : BaseActivity() {
 
         findViewById<View>(R.id.view_Finish).onClick { finish() }
 
-        val mRecyclerView = findViewById<RecyclerView>(R.id.view_RecyclerView)
-        mRecyclerView.setStyle_LinearVertical()
         mRecyclerView.adapter = mAdapter
 
         DriverManager.getAllActivityRecordObserve(this)
@@ -43,8 +44,18 @@ class UninstallActivity : BaseActivity() {
                 LogUtils.i("改变:${it}")
                 when (it) {
                     is ActivityRecordInstall -> {
+
+//                        try{
+//                            val get = LinearLayoutManager::class.java.getDeclaredField("mPendingScrollPosition").get(mRecyclerView.layoutManager) as Int
+//
+//                            LogUtils.e("当前所在位置:${get}")
+//                        }catch (e:Exception){
+//                            LogUtils.e(e)
+//                        }
+
                         mAdapter.insert(it.index, VH_Uninstall(getLiveDataOnlyObserve(), it.record))
-                        mAdapter.notifyDataSetChanged()
+                        mRecyclerView.scrollToPosition(0)
+
                     }
                     is ActivityRecordReplaced -> {
                         mAdapter.replace(it.index, VH_Uninstall(getLiveDataOnlyObserve(), it.record))
