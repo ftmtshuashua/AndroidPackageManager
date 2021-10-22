@@ -11,5 +11,8 @@
     <color name="black_a5">#88000000</color>
     <color name="black_a1">#22000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_a8">#CCFFFFFF</color>
+    <color name="white_a5">#88FFFFFF</color>
+    <color name="white_a1">#22FFFFFF</color>
     <color name="alp">#00FFFFFF</color>
 </resources>

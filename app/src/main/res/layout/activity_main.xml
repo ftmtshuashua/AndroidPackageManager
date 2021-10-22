@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/app_colorPrimary">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <!-- 管理 -->
         <ImageView
             android:id="@+id/view_Setting"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/shape_clickable_alp_to_primary"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:scaleType="center"
-            android:src="@mipmap/ic_setting"
-            android:text="设置"
-            android:textSize="14sp"
+            style="@style/Button_ActionBar"
+            android:src="@drawable/ico_manager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="启动器"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+        <!-- 应用卸载 -->
+        <ImageView
+            android:id="@+id/view_Uninstall"
+            style="@style/Button_ActionBar"
+            android:src="@drawable/ico_uninstall"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +34,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_RecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:focusable="true" />
 
+    <TextView
+        android:id="@+id/view_Tips"
+        style="@style/TextView_WindowsCenterTips"
+        android:text="No launch"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

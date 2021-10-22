@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="@drawable/shape_clickable_white_to_black"
+    android:background="@drawable/clickable_alp_to_focus"
     android:gravity="center_horizontal"
     android:minWidth="80dp"
     android:orientation="vertical"

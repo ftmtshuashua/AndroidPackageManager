@@ -1,7 +1,18 @@
 package com.acap.pkg.manager.base
 
-import com.acap.pkg.manager.adapter.SecurityLiveData
+import android.content.pm.PackageManager
+import android.view.View
+import androidx.lifecycle.Observer
+import com.acap.pkg.manager.center.live.SimpleLiveData
 import com.tencent.mmkv.MMKV
+
+
+/** 读取包中所有信息 */
+val LOAD_CONFIG_PACKAGES = PackageManager.GET_ACTIVITIES or PackageManager.GET_SERVICES
+
+/** 读取包的基本信息 */
+val LOAD_CONFIG_PACKAGES_BASE = 0
+
 
 
 /**
@@ -14,14 +25,10 @@ import com.tencent.mmkv.MMKV
  */
 object ReadConfig {
 
-    init {
-
-    }
-
     /**
      * 数据读取更新
      */
-    val READ_CHANGE by lazy { SecurityLiveData<Int>() }
+    val READ_CHANGE by lazy { SimpleLiveData<Int>() }
 
     /**
      * 是否读取系统 App

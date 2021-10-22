@@ -7,7 +7,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp" >
+        android:layout_height="56dp">
+
 
         <ImageView
             android:id="@+id/view_Finish"
@@ -17,11 +18,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            style="@style/TextView_Title"
+            android:text="应用卸载"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

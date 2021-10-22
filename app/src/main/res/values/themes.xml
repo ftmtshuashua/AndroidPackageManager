@@ -1,12 +1,41 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="AndroidPackageManager" parent="Theme.AppCompat.NoActionBar">
         <item name="android:colorPrimary">@color/app_colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/app_colorPrimaryDark</item>
         <item name="android:colorAccent">@color/app_colorAccent</item>
-        <item name="android:windowBackground">@color/app_windowBackground</item>
+        <item name="android:windowBackground">@drawable/ic_background_1</item>
         <item name="android:overScrollMode">never</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="TextView_Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">title</item>
+        <item name="android:textColor">@color/white_a8</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <!-- 屏幕中间的提示 -->
+    <style name="TextView_WindowsCenterTips">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">tips</item>
+        <item name="android:textColor">@color/white_a5</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="Button_ActionBar">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@drawable/clickable_alp_to_focus</item>
     </style>
 </resources>

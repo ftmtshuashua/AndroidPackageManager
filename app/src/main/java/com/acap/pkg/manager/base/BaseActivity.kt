@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
 
 
 /**
@@ -18,17 +19,15 @@ import androidx.lifecycle.LifecycleOwner
  */
 open class BaseActivity : AppCompatActivity() {
     private val mForegroundTask by lazy { ForegroundTask(lifecycle) }
+    private val mLiveDataOnlyObserve by lazy { LiveDataOnlyObserve(this) }
+
     fun getContext(): Context = this
 
     fun runForeground(action: () -> Unit) {
         mForegroundTask.run(action)
     }
 
-    //启动Activity
-    fun startActivity(cls: Class<out BaseActivity>) {
-        startActivity(Intent(getContext(), cls))
-    }
-
+    fun getLiveDataOnlyObserve() = mLiveDataOnlyObserve
 }
 
 

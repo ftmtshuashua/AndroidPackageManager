@@ -18,21 +18,16 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SettingActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ApkDetailActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".ApkDetailActivity" />
+        <activity android:name=".UninstallActivity" />
     </application>
 
 </manifest>

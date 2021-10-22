@@ -1,12 +1,13 @@
 package com.acap.pkg.manager.utils
 
+import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import androidx.recyclerview.widget.RecyclerView
-import com.acap.pkg.manager.base.BaseApplication
-import com.acap.pkg.manager.event.ApkInfo
+import com.acap.pkg.manager.base.LOAD_CONFIG_PACKAGES
+import com.acap.pkg.manager.base.LOAD_CONFIG_PACKAGES_BASE
 import com.acap.toolkit.app.AppUtils
 import com.acap.toolkit.app.IntentUtils
 import com.acap.toolkit.log.LogUtils
@@ -21,23 +22,37 @@ import com.acap.toolkit.log.LogUtils
  * </pre>
  */
 object Utils {
+    val context by lazy { AppUtils.getApp<Application>() }
 
-    fun getPackageManager(): PackageManager = AppUtils.getApp<BaseApplication>().packageManager
+    /** 包管理器 */
+    val packageManager by lazy { AppUtils.getApp<Application>().packageManager }
 
+
+    /** 获得当前App的包名 */
+    fun getPackageName() = AppUtils.getAppPackageName()
+
+    /** 判断是否为系统APP */
     fun isSystemApp(packageInfo: PackageInfo) = packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
 
-    fun uninstall(context: Context, info: ApkInfo) {
-        try {
-            context.startActivity(IntentUtils.getUninstallAppIntent(info.PackageName))
-        } catch (e: Throwable) {
-            LogUtils.e(e)
+    /** 判断是否为系统APP */
+    fun isSystemApp(packageName: String) = getPackageInfo(packageName, LOAD_CONFIG_PACKAGES_BASE)?.let { isSystemApp(it) } ?: false
+
+    /** 根据包名获得包信息 */
+    fun getPackageInfo(packageName: String, flags: Int = LOAD_CONFIG_PACKAGES): PackageInfo? {
+        return try {
+            packageManager.getPackageInfo(packageName, flags)
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
         }
     }
 
-    fun getInstalledPackages() = getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES or PackageManager.GET_SERVICES)
-
-    fun getPackageInfo(packageName: String): PackageInfo {
-        return getPackageManager().getPackageInfo(packageName, PackageManager.GET_ACTIVITIES or PackageManager.GET_SERVICES)
+    /** 卸载App */
+    fun uninstall(context: Context, packageName: String) {
+        try {
+            context.startActivity(IntentUtils.getUninstallAppIntent(packageName))
+        } catch (e: Throwable) {
+            LogUtils.e(e)
+        }
     }
 
     fun setOnScrollStateChanged(recyclerView: RecyclerView, action: (RecyclerView, Int) -> Unit): RecyclerView {
@@ -49,5 +64,4 @@ object Utils {
         })
         return recyclerView
     }
-
 }
