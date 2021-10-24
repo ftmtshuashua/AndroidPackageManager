@@ -14,6 +14,7 @@
             android:id="@+id/view_Finish"
             style="@style/Button_ActionBar"
             android:src="@drawable/ico_banck"
+            android:focusable="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,6 +32,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_RecyclerView"
         android:layout_width="match_parent"
+        android:fadingEdgeLength="16dp"
+        android:requiresFadingEdge="vertical"
         android:layout_height="match_parent" />
 
 </LinearLayout>

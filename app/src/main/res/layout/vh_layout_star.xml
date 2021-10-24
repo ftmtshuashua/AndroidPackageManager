@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
     android:background="@drawable/clickable_alp_to_focus"
     android:gravity="center_horizontal"
     android:orientation="vertical"

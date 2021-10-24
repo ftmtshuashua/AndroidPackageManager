@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_Root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
+    android:background="@drawable/clickable_alp_to_focus"
+    android:focusable="true"
     android:gravity="center_horizontal"
-    android:focusable="false"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp">
 
     <ImageView
         android:id="@+id/view_AppLogo"
@@ -33,33 +36,25 @@
             android:lines="1"
             android:text="AppNameAppName"
             android:textColor="@color/white_a8"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/view_AppVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:lines="1"
             android:text="VersionName"
             android:textColor="@color/white_a5"
-            android:textSize="8sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/view_Mark"-->
-    <!--        android:layout_width="20dp"-->
-    <!--        android:layout_height="20dp"-->
-    <!--        app:layout_constraintRight_toRightOf="@+id/view_AppLogo"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/view_AppLogo"-->
-    <!--        tools:src="@mipmap/mark_system" />-->
 
     <Button
         android:id="@+id/view_Uninstall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:focusableInTouchMode="true"
         android:text="卸载"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

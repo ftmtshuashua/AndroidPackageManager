@@ -10,13 +10,11 @@ import android.os.Message
 import androidx.lifecycle.LifecycleOwner
 import com.acap.ec.listener.OnEventCompleteListener
 import com.acap.ec.listener.OnEventNextListener
-import com.acap.pkg.manager.adapter.MultipleViewModel
 import com.acap.pkg.manager.base.replace
 import com.acap.pkg.manager.center.live.SimpleLiveData
 import com.acap.pkg.manager.event.EventGetPackages
 import com.acap.pkg.manager.event.utils.OnEventTimeMonitor
 import com.acap.toolkit.log.LogUtils
-import com.weather.utils.adapter.MultipleRecyclerViewAdapter
 
 
 /**
@@ -34,8 +32,8 @@ object DriverManager {
     private val AllActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
 
     // 标星的活动记录
-    val StarActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
-    val StarActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
+    private val StarActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
+    private val StarActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
 
 
     private lateinit var mRecordChange: RecordChange
@@ -46,7 +44,9 @@ object DriverManager {
             .listener(OnEventNextListener {
                 val list = it as MutableList<ActivityRecord>
                 AllActivityRecord.setValue(list)
-                StarActivityRecord.setValue(list)
+
+
+//                StarActivityRecord.setValue(list)
             })
             .listener(OnEventTimeMonitor())
             .listener(OnEventCompleteListener { registerReceiver(context) })
@@ -77,13 +77,15 @@ object DriverManager {
             }
         }
         mRecordChange.onUninstall { packageName ->
-            LogUtils.e("处理前：${AllActivityRecord.value?.size}")
             AllActivityRecord.value?.apply {
                 val change = ActivityRecordUninstall(indexOf(find { it.packageName == packageName }), packageName)
-                change.executor(this)
-                AllActivityRecordChange.setValue(change)
+                if (change.index != -1) {
+                    change.executor(this)
+                    AllActivityRecordChange.setValue(change)
+                } else {
+                    LogUtils.e("${change.packageName} -> 卸载失败:未找到数据")
+                }
             }
-            LogUtils.e("处理后：${AllActivityRecord.value?.size}")
         }
     }
 
@@ -184,6 +186,14 @@ class ActivityRecordObserve(
     private var onChange: ((ActivityRecordChange) -> Unit)? = null
     private var onInit: ((MutableList<ActivityRecord>) -> Unit)? = null
 
+    private var onUpdate: ((MutableList<ActivityRecord>?) -> Unit)? = null
+
+    /** 数据更新 */
+    fun onUpdate(call: (MutableList<ActivityRecord>?) -> Unit): ActivityRecordObserve {
+        onUpdate = call
+        return this
+    }
+
     /** 数据改变 */
     fun onChange(call: (ActivityRecordChange) -> Unit): ActivityRecordObserve {
         onChange = call
@@ -201,10 +211,13 @@ class ActivityRecordObserve(
         if (mIsStarted) throw RuntimeException("The observer is started !")
         mIsStarted = true
 
+        onUpdate?.apply { this.invoke(record.value) }
+
         onChange?.let { call ->
             recordChange.observe(owner) {
                 if (mIsInited) {
                     call(it)
+                    onUpdate?.apply { this.invoke(record.value) }
                 }
             }
         }
@@ -212,6 +225,7 @@ class ActivityRecordObserve(
             record.observe(owner) {
                 call(it)
                 mIsInited = true
+                onUpdate?.apply { this.invoke(it) }
             }
         }
 

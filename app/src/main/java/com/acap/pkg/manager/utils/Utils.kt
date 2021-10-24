@@ -11,6 +11,9 @@ import com.acap.pkg.manager.base.LOAD_CONFIG_PACKAGES_BASE
 import com.acap.toolkit.app.AppUtils
 import com.acap.toolkit.app.IntentUtils
 import com.acap.toolkit.log.LogUtils
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 /**
@@ -63,5 +66,28 @@ object Utils {
             }
         })
         return recyclerView
+    }
+
+    /**
+     * 执行 CMD 命令
+     *  获得包信息:
+     *      dumpsys package [packageName]
+     *  启动Activity:
+     *      am start -n [packageName]/[activityName]
+     * */
+    fun exec(command: String): String {
+        val sb = StringBuffer()
+        try {
+
+            val process: Process = Runtime.getRuntime().exec(command)
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+            var line: String?
+            while ((bufferedReader.readLine().also { line = it }) != null) {
+                sb.append(line).append("\n")
+            }
+        } catch (e: IOException) {
+            return e.toString()
+        }
+        return sb.toString()
     }
 }

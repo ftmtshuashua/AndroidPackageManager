@@ -36,6 +36,7 @@
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:scaleType">center</item>
+        <item name="android:contentDescription">desc</item>
         <item name="android:background">@drawable/clickable_alp_to_focus</item>
     </style>
 </resources>

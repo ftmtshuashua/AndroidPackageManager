@@ -8,11 +8,10 @@ import com.tencent.mmkv.MMKV
 
 
 /** 读取包中所有信息 */
-val LOAD_CONFIG_PACKAGES = PackageManager.GET_ACTIVITIES or PackageManager.GET_SERVICES
+val LOAD_CONFIG_PACKAGES = PackageManager.GET_ACTIVITIES
 
 /** 读取包的基本信息 */
 val LOAD_CONFIG_PACKAGES_BASE = 0
-
 
 
 /**

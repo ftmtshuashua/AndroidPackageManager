@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 /*-------------------------------- 扩展配置 ----------------------------------*/
 
 /** View的点击监听 */
-fun <T : View> T.onClick(click: (T) -> Unit) = setOnClickListener { click(it as T) }
+fun <T : View> T.onClick(click: (T) -> Unit):T {
+    setOnClickListener { click(it as T) }
+    return this
+}
 
 
 /** 启动Activity */

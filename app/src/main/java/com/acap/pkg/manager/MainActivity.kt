@@ -14,6 +14,7 @@ import com.acap.pkg.manager.center.ActivityRecord
 import com.acap.pkg.manager.center.DriverManager
 import com.acap.pkg.manager.dialog.MenuDialog
 import com.acap.pkg.manager.utils.Utils
+import com.acap.toolkit.app.ToastUtils
 import com.acap.toolkit.view.ViewUtils
 import com.weather.utils.adapter.MultipleRecyclerViewAdapter
 
@@ -48,13 +49,12 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         mAdapter.setOnItemClickListener { adapter, viewHolder, view, position ->
             val mPackageViewModel = viewHolder.saveData as VH_Star
-//            val intent = getContext().packageManager.getLaunchIntentForPackage(mPackageViewModel.apkInfo.PackageName)
-//            intent?.let { startActivity(it) } ?: ToastUtils.toast("该应用没有启动器!")
+            val intent = getContext().packageManager.getLaunchIntentForPackage(mPackageViewModel.apkInfo.packageName)
+            intent?.let { startActivity(it) } ?: ToastUtils.toast("该应用没有启动器!")
         }
 
         mAdapter.setOnItemLongClickListener { adapter, viewHolder, view, position ->
@@ -68,12 +68,12 @@ class MainActivity : BaseActivity() {
         findViewById<View>(R.id.view_Uninstall).onClick { startActivityByClass(UninstallActivity::class.java) }
 
 
-        DriverManager.StarActivityRecord.observe(this) { it ->
-            ViewUtils.setVisibility(findViewById(R.id.view_Tips), if (it.isEmpty()) View.VISIBLE else View.GONE)
+        DriverManager.getStarActivityRecordObserve(this)
+            .onInit { it -> it.map { VH_Star(getLiveDataOnlyObserve(), it) }.apply { mAdapter.set(this) } }
+            .onChange { }
+            .onUpdate { ViewUtils.setVisibility(findViewById(R.id.view_Tips), if (it?.isEmpty() != false) View.VISIBLE else View.GONE) }
+            .start()
 
-            it.map { VH_Star(getLiveDataOnlyObserve(), it) }
-                .apply { mAdapter.set(this) }
-        }
     }
 }
 

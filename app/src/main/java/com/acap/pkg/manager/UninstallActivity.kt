@@ -44,17 +44,8 @@ class UninstallActivity : BaseActivity() {
                 LogUtils.i("改变:${it}")
                 when (it) {
                     is ActivityRecordInstall -> {
-
-//                        try{
-//                            val get = LinearLayoutManager::class.java.getDeclaredField("mPendingScrollPosition").get(mRecyclerView.layoutManager) as Int
-//
-//                            LogUtils.e("当前所在位置:${get}")
-//                        }catch (e:Exception){
-//                            LogUtils.e(e)
-//                        }
-
                         mAdapter.insert(it.index, VH_Uninstall(getLiveDataOnlyObserve(), it.record))
-                        mRecyclerView.scrollToPosition(0)
+//                        mRecyclerView.scrollToPosition(0)
 
                     }
                     is ActivityRecordReplaced -> {
