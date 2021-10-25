@@ -1,7 +1,7 @@
 package com.acap.pkg.manager.base
 
 import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -20,6 +20,17 @@ import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
 open class BaseActivity : AppCompatActivity() {
     private val mForegroundTask by lazy { ForegroundTask(lifecycle) }
     private val mLiveDataOnlyObserve by lazy { LiveDataOnlyObserve(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        lifecycle.addObserver(object : LifecycleEventObserver {
+//            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+//                LogUtils.i("${this.javaClass.name} -> ${event}")
+//            }
+//
+//        })
+    }
 
     fun getContext(): Context = this
 

@@ -8,10 +8,13 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.acap.ec.listener.OnEventCompleteListener
 import com.acap.ec.listener.OnEventNextListener
 import com.acap.pkg.manager.base.replace
 import com.acap.pkg.manager.center.live.SimpleLiveData
+import com.acap.pkg.manager.center.room.DatabaseHelper
+import com.acap.pkg.manager.center.room.StarApp
 import com.acap.pkg.manager.event.EventGetPackages
 import com.acap.pkg.manager.event.utils.OnEventTimeMonitor
 import com.acap.toolkit.log.LogUtils
@@ -27,6 +30,8 @@ import com.acap.toolkit.log.LogUtils
  */
 object DriverManager {
 
+    private lateinit var context: Context
+
     // 全部的活动记录
     private val AllActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
     private val AllActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
@@ -35,11 +40,15 @@ object DriverManager {
     private val StarActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
     private val StarActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
 
+    // 星数据
+//    private val mStarAppDao by lazy { DatabaseHelper.mDatabaseApp.getStarAppDao() }
+
 
     private lateinit var mRecordChange: RecordChange
 
     /** 安装卸载注册 */
     fun init(context: Context) {
+        this.context = context
         EventGetPackages<Any>(true)
             .listener(OnEventNextListener {
                 val list = it as MutableList<ActivityRecord>
@@ -51,6 +60,8 @@ object DriverManager {
             .listener(OnEventTimeMonitor())
             .listener(OnEventCompleteListener { registerReceiver(context) })
             .start()
+
+//        val value = mStarAppDao.getAll() as LiveData<List<StarApp>>
     }
 
     // 安装卸载广播监听

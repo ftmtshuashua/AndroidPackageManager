@@ -58,10 +58,10 @@ class EventGetPackages<T>(
 //                    }
 //                }
 
-                apksRecord.forEach {
-                    val exec = Utils.exec("dumpsys package ${it.packageName}")
-                    LogUtils.i("${it.packageName} -> \n $exec")
-                }
+//                apksRecord.forEach {
+//                    val exec = Utils.exec("dumpsys package ${it.packageName}")
+//                    LogUtils.i("${it.packageName} -> \n $exec")
+//                }
 
 
 

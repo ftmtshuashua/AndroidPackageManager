@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp">
 
-
         <ImageView
             android:id="@+id/view_Finish"
             style="@style/Button_ActionBar"
@@ -20,7 +19,7 @@
 
         <TextView
             style="@style/TextView_Title"
-            android:text="应用卸载"
+            android:text="应用管理"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

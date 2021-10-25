@@ -12,6 +12,8 @@
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_crect_white_a1.xml" value="0.228125" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_crect_white_a2.xml" value="0.228125" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_manager.xml" value="0.1691995947315096" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_screen_dataper.xml" value="0.23324275362318841" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_setting.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_uninstall.xml" value="0.36041666666666666" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/layout_home_apk.xml" value="0.5" />
@@ -23,15 +25,8 @@
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_menuitem_text.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.27447916666666666" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.27447916666666666" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/drawable/clickable_alp_to_focus.xml" value="0.24375" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/drawable/shape_crect_white_a1.xml" value="0.24375" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/layout/activity_uninstall.xml" value="0.22760416666666666" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/layout/vh_layout_star.xml" value="0.22760416666666666" />
-        <entry key="..\:/workspace/github/AndroidPackageManager/app/src/main/res/layout/vh_layout_uninstall.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8 (6)" project-jdk-type="JavaSDK" />
 </project>

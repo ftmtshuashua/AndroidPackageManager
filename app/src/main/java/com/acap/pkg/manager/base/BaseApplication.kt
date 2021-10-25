@@ -3,6 +3,7 @@ package com.acap.pkg.manager.base
 import android.app.Application
 import com.acap.pkg.manager.BuildConfig
 import com.acap.pkg.manager.center.DriverManager
+import com.acap.pkg.manager.utils.ScreenAdapter
 import com.acap.toolkit.log.LogUtils
 import com.tencent.mmkv.MMKV
 
@@ -20,6 +21,7 @@ class BaseApplication : Application() {
         super.onCreate()
         LogUtils.setDebug(BuildConfig.DEBUG)
         MMKV.initialize(this)
+        ScreenAdapter.init(this, 420f)
 
         DriverManager.init(this)
     }

@@ -64,7 +64,7 @@ class MainActivity : BaseActivity() {
         }
 
 
-        findViewById<ImageView>(R.id.view_Setting).onClick { startActivityByClass(SettingActivity::class.java) }
+        findViewById<ImageView>(R.id.view_Setting).onClick { startActivityByClass(ManagerActivity::class.java) }
         findViewById<View>(R.id.view_Uninstall).onClick { startActivityByClass(UninstallActivity::class.java) }
 
 
