@@ -29,10 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".ApkDetailActivity" />
-        <activity android:name=".UninstallActivity" />
-        <activity android:name=".ManagerActivity" />
+        <activity
+            android:name=".SettingActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ApkDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".UninstallActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ManagerActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
