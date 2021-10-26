@@ -46,4 +46,8 @@ data class StarApp(
     init {
         update_time = System.currentTimeMillis()
     }
+
+    override fun toString(): String {
+        return "StarApp(${star_name})"
+    }
 }

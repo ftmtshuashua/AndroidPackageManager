@@ -99,10 +99,14 @@ object DriverManager {
 
     private fun initStar() {
         GlobalScopeHelper.io {
-            StarActivityRecord.setValue(mStarAppDao.getAll()
+            StarActivityRecord.setValue(mStarAppDao.getAll().toMutableList()
+                .also { LogUtils.i("系统:${it}") }
                 .filter { it.star_enable }
+                .also { LogUtils.i("过滤:${it}") }
                 .sortedBy { it.update_time }
-                .map { StarRecord(it.package_name, it.activity_name, it.star_name) }.toMutableList()
+                .also { LogUtils.i("排序:${it}") }
+                .map { StarRecord(it.package_name, it.activity_name, it.star_name) }
+                .toMutableList()
             )
         }
     }
