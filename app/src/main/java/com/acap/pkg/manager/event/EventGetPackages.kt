@@ -5,12 +5,8 @@ import com.acap.ec.BaseEvent
 import com.acap.pkg.manager.base.LOAD_CONFIG_PACKAGES
 import com.acap.pkg.manager.center.ActivityRecord
 import com.acap.pkg.manager.center.toActivityRecord
+import com.acap.pkg.manager.utils.GlobalScopeHelper
 import com.acap.pkg.manager.utils.Utils
-import com.acap.toolkit.log.LogUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 /**
@@ -36,8 +32,8 @@ class EventGetPackages<T>(
 
     override fun onCall(params: T?) {
 
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
+        GlobalScopeHelper.main {
+            io {
                 var apks = readInstalledPackages()
                 val packageName = Utils.getPackageName()
                 // 清理
@@ -62,7 +58,6 @@ class EventGetPackages<T>(
 //                    val exec = Utils.exec("dumpsys package ${it.packageName}")
 //                    LogUtils.i("${it.packageName} -> \n $exec")
 //                }
-
 
 
                 next(apksRecord)

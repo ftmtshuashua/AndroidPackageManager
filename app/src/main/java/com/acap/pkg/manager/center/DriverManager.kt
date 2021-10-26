@@ -1,14 +1,15 @@
 package com.acap.pkg.manager.center
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import com.acap.ec.listener.OnEventCompleteListener
 import com.acap.ec.listener.OnEventNextListener
 import com.acap.pkg.manager.base.replace
@@ -17,6 +18,7 @@ import com.acap.pkg.manager.center.room.DatabaseHelper
 import com.acap.pkg.manager.center.room.StarApp
 import com.acap.pkg.manager.event.EventGetPackages
 import com.acap.pkg.manager.event.utils.OnEventTimeMonitor
+import com.acap.pkg.manager.utils.GlobalScopeHelper
 import com.acap.toolkit.log.LogUtils
 
 
@@ -28,51 +30,46 @@ import com.acap.toolkit.log.LogUtils
  * Created by A·Cap on 2021/10/21 16:01
  * </pre>
  */
+@SuppressLint("StaticFieldLeak")
 object DriverManager {
 
     private lateinit var context: Context
 
     // 全部的活动记录
     private val AllActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
-    private val AllActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
+    private val AllActivityRecordChange by lazy { SimpleLiveData<RecordChange<ActivityRecord>>() }     // 记录ActivityRecord的上一次改变
 
     // 标星的活动记录
-    private val StarActivityRecord by lazy { SimpleLiveData<MutableList<ActivityRecord>>() }
-    private val StarActivityRecordChange by lazy { SimpleLiveData<ActivityRecordChange>() }     // 记录ActivityRecord的上一次改变
+    private val StarActivityRecord by lazy { SimpleLiveData<MutableList<StarRecord>>() }
+    private val StarActivityRecordChange by lazy { SimpleLiveData<RecordChange<StarRecord>>() }     // 记录ActivityRecord的上一次改变
 
     // 星数据
-//    private val mStarAppDao by lazy { DatabaseHelper.mDatabaseApp.getStarAppDao() }
+    private val mStarAppDao by lazy { DatabaseHelper.mDatabaseApp.getStarAppDao() }
 
 
-    private lateinit var mRecordChange: RecordChange
+    private lateinit var mRecordChange: ApkChange
 
     /** 安装卸载注册 */
     fun init(context: Context) {
         this.context = context
         EventGetPackages<Any>(true)
-            .listener(OnEventNextListener {
-                val list = it as MutableList<ActivityRecord>
-                AllActivityRecord.setValue(list)
-
-
-//                StarActivityRecord.setValue(list)
-            })
+            .listener(OnEventNextListener { AllActivityRecord.setValue(it.toMutableList()) })
             .listener(OnEventTimeMonitor())
-            .listener(OnEventCompleteListener { registerReceiver(context) })
+            .listener(OnEventCompleteListener { initReceiver(context) })
             .start()
 
-//        val value = mStarAppDao.getAll() as LiveData<List<StarApp>>
+        initStar()
     }
 
     // 安装卸载广播监听
-    private fun registerReceiver(context: Context) {
-        mRecordChange = RecordChange(context)
+    private fun initReceiver(context: Context) {
+        mRecordChange = ApkChange(context)
 
         mRecordChange.onInstall { packageName ->
             val activityRecord = ActivityRecord(packageName)
             if (activityRecord.exists()) {
-                val change = ActivityRecordInstall(0, activityRecord)
-                AllActivityRecord.value?.apply { change.executor(this) }
+                val change = RecordInstall(0, activityRecord)
+                AllActivityRecord.value?.apply { this.add(change.index, change.record) }
                 AllActivityRecordChange.setValue(change)
 
             }
@@ -81,17 +78,17 @@ object DriverManager {
             val activityRecord = ActivityRecord(packageName)
             if (activityRecord.exists()) {
                 AllActivityRecord.value?.apply {
-                    val change = ActivityRecordReplaced(indexOf(find { it.packageName == packageName }), activityRecord)
-                    change.executor(this)
+                    val change = RecordReplaced(indexOf(find { it.packageName == packageName }), activityRecord)
+                    this.replace(change.index, change.record)
                     AllActivityRecordChange.setValue(change)
                 }
             }
         }
         mRecordChange.onUninstall { packageName ->
             AllActivityRecord.value?.apply {
-                val change = ActivityRecordUninstall(indexOf(find { it.packageName == packageName }), packageName)
+                val change = RecordUninstall<ActivityRecord>(indexOf(find { it.packageName == packageName }), packageName)
                 if (change.index != -1) {
-                    change.executor(this)
+                    this.removeAt(change.index)
                     AllActivityRecordChange.setValue(change)
                 } else {
                     LogUtils.e("${change.packageName} -> 卸载失败:未找到数据")
@@ -100,15 +97,41 @@ object DriverManager {
         }
     }
 
+    private fun initStar() {
+        GlobalScopeHelper.io {
+            StarActivityRecord.setValue(mStarAppDao.getAll()
+                .filter { it.star_enable }
+                .sortedBy { it.update_time }
+                .map { StarRecord(it.package_name, it.activity_name, it.star_name) }.toMutableList()
+            )
+        }
+    }
+
     /** 获得全记录数据 */
-    fun getAllActivityRecordObserve(owner: LifecycleOwner): ActivityRecordObserve = ActivityRecordObserve(owner, AllActivityRecord, AllActivityRecordChange)
+    fun getAllActivityRecordObserve(owner: LifecycleOwner): ActivityRecordObserve<ActivityRecord> = ActivityRecordObserve(owner, AllActivityRecord, AllActivityRecordChange)
 
     /** 获得标星记录数据 */
-    fun getStarActivityRecordObserve(owner: LifecycleOwner): ActivityRecordObserve = ActivityRecordObserve(owner, StarActivityRecord, StarActivityRecordChange)
+    fun getStarActivityRecordObserve(owner: LifecycleOwner): ActivityRecordObserve<StarRecord> = ActivityRecordObserve(owner, StarActivityRecord, StarActivityRecordChange)
+
+    /** 设置标星记录 */
+    fun setStarActivity(ai: ActivityInfo, isStar: Boolean, star_name: String) {
+        GlobalScopeHelper.io {
+            val starApp = mStarAppDao.findById(ai.packageName, ai.name) ?: StarApp(ai.packageName, ai.name, star_name, isStar)
+            starApp.star_enable = isStar
+            mStarAppDao.insert(starApp)
+
+            initStar()
+        }
+    }
+
+    /** 检擦是否 Star */
+    fun isStarActivity(ai: ActivityInfo): Boolean = StarActivityRecord.value?.let { it -> return !it.none { it.packageName == ai.packageName && it.activityName == ai.name } } ?: false
+
+
 }
 
 // 安装卸载监听
-private class RecordChange private constructor() : BroadcastReceiver() {
+private class ApkChange private constructor() : BroadcastReceiver() {
 
     companion object {
         @JvmStatic
@@ -167,17 +190,17 @@ private class RecordChange private constructor() : BroadcastReceiver() {
         }
     }
 
-    fun onInstall(call: ((String) -> Unit)): RecordChange {
+    fun onInstall(call: ((String) -> Unit)): ApkChange {
         onInstall = call
         return this
     }
 
-    fun onUninstall(call: ((String) -> Unit)): RecordChange {
+    fun onUninstall(call: ((String) -> Unit)): ApkChange {
         onUninstall = call
         return this
     }
 
-    fun onReplaced(call: ((String) -> Unit)): RecordChange {
+    fun onReplaced(call: ((String) -> Unit)): ApkChange {
         onReplaced = call
         return this
     }
@@ -185,34 +208,34 @@ private class RecordChange private constructor() : BroadcastReceiver() {
 }
 
 // 数据变化监听
-class ActivityRecordObserve(
+class ActivityRecordObserve<T>(
     val owner: LifecycleOwner,
-    val record: SimpleLiveData<MutableList<ActivityRecord>>,
-    val recordChange: SimpleLiveData<ActivityRecordChange>,
+    val record: SimpleLiveData<MutableList<T>>,
+    val recordChange: SimpleLiveData<RecordChange<T>>,
 ) {
 
     private var mIsStarted = false
     private var mIsInited = false
 
-    private var onChange: ((ActivityRecordChange) -> Unit)? = null
-    private var onInit: ((MutableList<ActivityRecord>) -> Unit)? = null
+    private var onChange: ((RecordChange<T>) -> Unit)? = null
+    private var onInit: ((MutableList<T>) -> Unit)? = null
 
-    private var onUpdate: ((MutableList<ActivityRecord>?) -> Unit)? = null
+    private var onUpdate: ((MutableList<T>?) -> Unit)? = null
 
     /** 数据更新 */
-    fun onUpdate(call: (MutableList<ActivityRecord>?) -> Unit): ActivityRecordObserve {
+    fun onUpdate(call: (MutableList<T>?) -> Unit): ActivityRecordObserve<T> {
         onUpdate = call
         return this
     }
 
     /** 数据改变 */
-    fun onChange(call: (ActivityRecordChange) -> Unit): ActivityRecordObserve {
+    fun onChange(call: (RecordChange<T>) -> Unit): ActivityRecordObserve<T> {
         onChange = call
         return this
     }
 
     /** 数据初始化 */
-    fun onInit(call: (MutableList<ActivityRecord>) -> Unit): ActivityRecordObserve {
+    fun onInit(call: (MutableList<T>) -> Unit): ActivityRecordObserve<T> {
         onInit = call
         return this
     }
@@ -245,35 +268,13 @@ class ActivityRecordObserve(
 }
 
 // 密封类:记录改变
-sealed class ActivityRecordChange {
-    abstract fun executor(mutableList: MutableList<ActivityRecord>)
-}
+sealed class RecordChange<T>
 
 // 记录安装事件
-data class ActivityRecordInstall(val index: Int, val record: ActivityRecord) : ActivityRecordChange() {
-    override fun executor(mutableList: MutableList<ActivityRecord>) {
-        mutableList.add(index, record)
-    }
-}
+data class RecordInstall<T>(val index: Int, val record: T) : RecordChange<T>()
 
 // 记录更新事件
-data class ActivityRecordReplaced(val index: Int, val record: ActivityRecord) : ActivityRecordChange() {
-    override fun executor(mutableList: MutableList<ActivityRecord>) {
-        mutableList.replace(index, record)
-    }
-}
+data class RecordReplaced<T>(val index: Int, val record: T) : RecordChange<T>()
 
 // 记录卸载事件
-data class ActivityRecordUninstall(val index: Int, var packageName: String) : ActivityRecordChange() {
-    override fun executor(mutableList: MutableList<ActivityRecord>) {
-        mutableList.removeAt(index)
-    }
-}
-
-//fun main() {
-//    val list = mutableListOf(1, 2, 3, 4, 5)
-//    println("原数据：$list")
-//    list.removeAll { it == 3 }
-//    println("处理之后：$list")
-//
-//}
+data class RecordUninstall<T>(val index: Int, var packageName: String) : RecordChange<T>()

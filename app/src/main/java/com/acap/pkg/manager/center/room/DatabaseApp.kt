@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
  * Created by A·Cap on 2021/10/25 16:52
  * </pre>
  */
-@Database(entities = [StarApp::class], exportSchema = false, version = 1)
+@Database(entities = [StarApp::class], exportSchema = false, version = 4)
 abstract class DatabaseApp : RoomDatabase() {
     abstract fun getStarAppDao(): StarAppDao
 }

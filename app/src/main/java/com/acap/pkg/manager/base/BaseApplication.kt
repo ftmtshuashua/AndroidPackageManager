@@ -3,6 +3,7 @@ package com.acap.pkg.manager.base
 import android.app.Application
 import com.acap.pkg.manager.BuildConfig
 import com.acap.pkg.manager.center.DriverManager
+import com.acap.pkg.manager.utils.GlobalExceptionUtils
 import com.acap.pkg.manager.utils.ScreenAdapter
 import com.acap.toolkit.log.LogUtils
 import com.tencent.mmkv.MMKV
@@ -19,6 +20,8 @@ import com.tencent.mmkv.MMKV
 class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        GlobalExceptionUtils.init()
+
         LogUtils.setDebug(BuildConfig.DEBUG)
         MMKV.initialize(this)
         ScreenAdapter.init(this, 420f)

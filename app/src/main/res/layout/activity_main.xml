@@ -28,7 +28,7 @@
             style="@style/Button_ActionBar"
             android:focusable="true"
             android:nextFocusLeft="@+id/view_Setting"
-            android:src="@drawable/ico_uninstall"
+            android:src="@drawable/ico_uninstall_bar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

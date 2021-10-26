@@ -2,10 +2,12 @@ package com.acap.pkg.manager.base
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.viewbinding.ViewBinding
 import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
 
 
@@ -20,6 +22,14 @@ import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
 open class BaseActivity : AppCompatActivity() {
     private val mForegroundTask by lazy { ForegroundTask(lifecycle) }
     private val mLiveDataOnlyObserve by lazy { LiveDataOnlyObserve(this) }
+
+
+    fun <T : ViewBinding> setViewBinding(cls: Class<out T>): T {
+        val declaredMethod = cls.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        val invoke = declaredMethod.invoke(cls, layoutInflater) as T
+        setContentView(invoke.root)
+        return invoke
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

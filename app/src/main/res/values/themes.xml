@@ -16,7 +16,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">title</item>
         <item name="android:textColor">@color/white_a8</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     <!-- 屏幕中间的提示 -->
     <style name="TextView_WindowsCenterTips">
@@ -24,7 +24,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">tips</item>
         <item name="android:textColor">@color/white_a5</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:layout_gravity">center</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintLeft_toLeftOf">parent</item>
@@ -36,6 +36,16 @@
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:scaleType">center</item>
+        <item name="android:focusable">true</item>
+        <item name="android:contentDescription">desc</item>
+        <item name="android:background">@drawable/clickable_alp_to_focus</item>
+    </style>
+
+    <style name="Button_ImageView">
+        <item name="android:layout_width">58dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:focusable">true</item>
         <item name="android:contentDescription">desc</item>
         <item name="android:background">@drawable/clickable_alp_to_focus</item>
     </style>

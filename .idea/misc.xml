@@ -6,11 +6,16 @@
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/clickable_alp_to_focus.xml" value="0.2609375" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/clickable_background.xml" value="0.18072916666666666" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.27447916666666666" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/ico_play.xml" value="0.3425925925925926" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/ico_star.xml" value="0.3425925925925926" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/ico_uninstall.xml" value="0.3425925925925926" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_clickable_alp_to_primary.xml" value="0.3640625" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_clickable_background.xml" value="0.3640625" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_clickable_white_to_black.xml" value="0.3640625" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_crect_white_a1.xml" value="0.228125" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/drawable/shape_crect_white_a2.xml" value="0.228125" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_apk_detail.xml" value="0.34791666666666665" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_error.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_manager.xml" value="0.1691995947315096" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/activity_screen_dataper.xml" value="0.23324275362318841" />
@@ -20,6 +25,8 @@
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/layout_menu.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/layout_pop_menu.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/menuitem_switch.xml" value="0.5" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_layout_activity_launcher.xml" value="0.36041666666666666" />
+        <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_layout_star.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_layout_uninstall.xml" value="0.36041666666666666" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_menuitem_switch.xml" value="0.34791666666666665" />
         <entry key="..\:/hope/LFP_Git_Project/AndroidPackageManager/app/src/main/res/layout/vh_menuitem_text.xml" value="0.34791666666666665" />

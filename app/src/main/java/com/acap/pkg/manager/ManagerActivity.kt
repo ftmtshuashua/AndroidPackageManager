@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.acap.pkg.manager.adapter.child.VH_Manager
 import com.acap.pkg.manager.base.BaseActivity
-import com.acap.pkg.manager.base.startActivityByClass
-import com.acap.pkg.manager.center.ActivityRecordInstall
-import com.acap.pkg.manager.center.ActivityRecordReplaced
-import com.acap.pkg.manager.center.ActivityRecordUninstall
+import com.acap.pkg.manager.center.RecordInstall
+import com.acap.pkg.manager.center.RecordReplaced
+import com.acap.pkg.manager.center.RecordUninstall
 import com.acap.pkg.manager.center.DriverManager
 import com.weather.utils.adapter.MultipleRecyclerViewAdapter
 
@@ -37,21 +36,19 @@ class ManagerActivity : BaseActivity() {
         mRecyclerView.adapter = mAdapter
         mAdapter.setOnItemClickListener { _, viewHolder, _, _ ->
             val apkInfo = (viewHolder.saveData as VH_Manager).apkInfo
-            val bundle = Bundle()
-            bundle.putString("packageName", apkInfo.packageName)
-            startActivityByClass(ApkDetailActivity::class.java, bundle)
+            ApkDetailActivity.start(this, apkInfo.packageName)
         }
 
         DriverManager.getAllActivityRecordObserve(this)
             .onChange {
                 when (it) {
-                    is ActivityRecordInstall -> {
+                    is RecordInstall -> {
                         mAdapter.insert(it.index, VH_Manager(getLiveDataOnlyObserve(), it.record))
                     }
-                    is ActivityRecordReplaced -> {
+                    is RecordReplaced -> {
                         mAdapter.replace(it.index, VH_Manager(getLiveDataOnlyObserve(), it.record))
                     }
-                    is ActivityRecordUninstall -> {
+                    is RecordUninstall -> {
                         mAdapter.remove(it.index)
                     }
                 }

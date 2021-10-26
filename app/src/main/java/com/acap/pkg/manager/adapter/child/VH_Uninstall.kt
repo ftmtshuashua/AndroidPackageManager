@@ -1,14 +1,13 @@
 package com.acap.pkg.manager.adapter.child
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.acap.pkg.manager.R
 import com.acap.pkg.manager.adapter.MultipleViewModel
 import com.acap.pkg.manager.base.onClick
 import com.acap.pkg.manager.center.ActivityRecord
 import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
+import com.acap.pkg.manager.databinding.VhLayoutUninstallBinding
 import com.acap.pkg.manager.utils.Utils
 import com.bumptech.glide.Glide
 import support.lfp.adapter.BaseViewHolder
@@ -35,22 +34,17 @@ class VH_Uninstall(val observe: LiveDataOnlyObserve, val apkInfo: ActivityRecord
     }
 
     override fun onUpdate(holder: BaseViewHolder<*>) {
+        val bind = VhLayoutUninstallBinding.bind(holder.contentView)
 
-        val vLogo = holder.getView<ImageView>(R.id.view_AppLogo)
-        val vName = holder.getView<TextView>(R.id.view_AppName)
-        val vVersion = holder.getView<TextView>(R.id.view_AppVersion)
-//        val vMark = holder.getView<ImageView>(R.id.view_Mark)
+        bind.viewUninstall.onClick { Utils.uninstall(it.context, apkInfo.packageName) }
+        bind.viewUninstall.isEnabled = !apkInfo.isSystemApp
 
-        holder.getView<View>(R.id.view_Uninstall).onClick { Utils.uninstall(it.context, apkInfo.packageName) }
-            .visibility = if (apkInfo.isSystemApp) View.GONE else View.VISIBLE
+        bind.viewRoot.isFocusable = apkInfo.isSystemApp
 
-        holder.getView<View>(R.id.view_Root).isFocusable = apkInfo.isSystemApp
+        observe.observe(apkInfo.appName, bind.viewAppName.createOrCache { bind.viewAppName.text = it })
 
-        observe.observe(apkInfo.appName, vName.createOrCache { vName.text = it })
+        bind.viewAppVersion.text = apkInfo.packageName
 
-//        vVersion.text = "v${apkInfo.packageInfo.versionName}"
-        vVersion.text = apkInfo.packageName
-
-        observe.observe(apkInfo.appIcon, vLogo.createOrCache { Glide.with(this).load(it).placeholder(R.mipmap.ic_launcher).into(vLogo) })
+        observe.observe(apkInfo.appIcon, bind.viewAppLogo.createOrCache { Glide.with(this).load(it).placeholder(R.mipmap.ic_launcher).into(bind.viewAppLogo) })
     }
 }

@@ -3,17 +3,13 @@ package com.acap.pkg.manager
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.acap.pkg.manager.adapter.child.VH_MenuItem_Text
 import com.acap.pkg.manager.adapter.child.VH_Star
 import com.acap.pkg.manager.base.BaseActivity
 import com.acap.pkg.manager.base.onClick
 import com.acap.pkg.manager.base.startActivityByClass
-import com.acap.pkg.manager.center.ActivityRecord
 import com.acap.pkg.manager.center.DriverManager
-import com.acap.pkg.manager.dialog.MenuDialog
-import com.acap.pkg.manager.utils.Utils
+import com.acap.pkg.manager.databinding.ActivityMainBinding
 import com.acap.toolkit.app.ToastUtils
 import com.acap.toolkit.view.ViewUtils
 import com.weather.utils.adapter.MultipleRecyclerViewAdapter
@@ -28,9 +24,10 @@ import com.weather.utils.adapter.MultipleRecyclerViewAdapter
  * </pre>
  */
 class MainActivity : BaseActivity() {
+    lateinit var mBind: ActivityMainBinding
     val mAdapter by lazy { MultipleRecyclerViewAdapter<VH_Star>() }
-    val mRecyclerView by lazy { Utils.setOnScrollStateChanged(findViewById<RecyclerView>(R.id.view_RecyclerView)) { _, _ -> mMenu.dismiss() } }
 
+    /*    val mRecyclerView by lazy { Utils.setOnScrollStateChanged(findViewById<RecyclerView>(R.id.view_RecyclerView)) { _, _ -> mMenu.dismiss() } }
     val mMenu by lazy {
         MenuDialog<ActivityRecord>(getContext(), {
             this.mAdapter.add(VH_MenuItem_Text("详情"))
@@ -43,30 +40,31 @@ class MainActivity : BaseActivity() {
 //            }
         }
     }
-
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBind = setViewBinding(ActivityMainBinding::class.java)
 
-        mRecyclerView.adapter = mAdapter
-        mRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+        mBind.viewRecyclerView.adapter = mAdapter
+        mBind.viewRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
         mAdapter.setOnItemClickListener { adapter, viewHolder, view, position ->
-            val mPackageViewModel = viewHolder.saveData as VH_Star
-            val intent = getContext().packageManager.getLaunchIntentForPackage(mPackageViewModel.apkInfo.packageName)
-            intent?.let { startActivity(it) } ?: ToastUtils.toast("该应用没有启动器!")
+
+            try {
+                startActivity((viewHolder.saveData as VH_Star).apkInfo.getIntent())
+            } catch (e: Throwable) {
+                ToastUtils.toast("启动失败")
+            }
         }
 
-        mAdapter.setOnItemLongClickListener { adapter, viewHolder, view, position ->
-            val mPackageViewModel = viewHolder.saveData as VH_Star
-            mMenu.show(view, mPackageViewModel.apkInfo)
-            true
-        }
-
+        /* mAdapter.setOnItemLongClickListener { adapter, viewHolder, view, position ->
+             val mPackageViewModel = viewHolder.saveData as VH_Star
+             mMenu.show(view, mPackageViewModel.apkInfo)
+             true
+         }*/
 
         findViewById<ImageView>(R.id.view_Setting).onClick { startActivityByClass(ManagerActivity::class.java) }
         findViewById<View>(R.id.view_Uninstall).onClick { startActivityByClass(UninstallActivity::class.java) }
-
 
         DriverManager.getStarActivityRecordObserve(this)
             .onInit { it -> it.map { VH_Star(getLiveDataOnlyObserve(), it) }.apply { mAdapter.set(this) } }

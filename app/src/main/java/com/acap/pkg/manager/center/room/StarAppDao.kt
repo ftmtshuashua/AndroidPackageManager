@@ -1,7 +1,6 @@
 package com.acap.pkg.manager.center.room
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -15,13 +14,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao //包含用于访问数据库的方法
 interface StarAppDao {
     @Query("select * from star_app ORDER BY update_time ASC")
-    fun getAll(): Flow<List<StarApp>>
+    suspend fun getAll(): List<StarApp>
+//    fun getAll(): Flow<List<StarApp>>
 
-    @Query("SELECT * FROM star_app WHERE package_name == :packageName")
-    fun findByPackageName(packageName: String): StarApp
+    @Query("SELECT * FROM star_app WHERE package_name == :package_name and activity_name=:activity_name")
+    suspend fun findById(package_name: String, activity_name: String): StarApp?
 
-    @Insert
-    suspend fun insertAll(vararg entity: StarApp)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg entity: StarApp)
 
     @Delete
     suspend fun delete(entity: StarApp)
@@ -30,15 +30,20 @@ interface StarAppDao {
     suspend fun deleteAll()
 }
 
-@Entity(tableName = "star_app")  //表示数据库中的表
+@Entity(tableName = "star_app", primaryKeys = ["package_name", "activity_name"])  //表示数据库中的表
 data class StarApp(
-    // Record Id
-    @PrimaryKey(autoGenerate = true) val rid: Int,
-    // 包名
-    @ColumnInfo val package_name: String,
-    // 自定义的名称
-    @ColumnInfo val star_name: Boolean,
-    // 更新时间，用于排序
-    @ColumnInfo val update_time: Long,
-
-    )
+    /*主键 - 包名*/
+    val package_name: String,
+    /*主键 - 目标页*/
+    val activity_name: String,
+    /*显示名*/
+    var star_name: String,
+    /*是否标星*/
+    var star_enable: Boolean,
+    /*更新时间*/
+    var update_time: Long = System.currentTimeMillis(),
+) {
+    init {
+        update_time = System.currentTimeMillis()
+    }
+}

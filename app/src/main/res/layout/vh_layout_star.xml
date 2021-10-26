@@ -52,7 +52,7 @@
         android:layout_height="20dp"
         app:layout_constraintRight_toRightOf="@+id/view_AppLogo"
         app:layout_constraintTop_toTopOf="@+id/view_AppLogo"
-        tools:src="@mipmap/mark_system" />
+        tools:src="@drawable/mark_system" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_Root"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/clickable_alp_to_focus"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingRight="8dp">
+
+
+    <TextView
+        android:id="@+id/view_ActivityName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="start"
+        android:maxLines="2"
+        android:text="ActivityName"
+        android:textColor="@color/white_a8"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/layout_Menu"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_Menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/view_Open"
+            style="@style/Button_ImageView"
+            android:src="@drawable/ico_play" />
+
+        <ImageButton
+            android:id="@+id/view_Star"
+            style="@style/Button_ImageView"
+            android:src="@drawable/ico_star" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
