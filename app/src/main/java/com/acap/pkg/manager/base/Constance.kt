@@ -1,9 +1,6 @@
 package com.acap.pkg.manager.base
 
 import android.content.pm.PackageManager
-import android.view.View
-import androidx.lifecycle.Observer
-import com.acap.pkg.manager.center.live.SimpleLiveData
 import com.tencent.mmkv.MMKV
 
 
@@ -23,30 +20,11 @@ val LOAD_CONFIG_PACKAGES_BASE = 0
  * </pre>
  */
 object ReadConfig {
-
-    /**
-     * 数据读取更新
-     */
-    val READ_CHANGE by lazy { SimpleLiveData<Int>() }
-
-    /**
-     * 是否读取系统 App
-     */
-    var READ_SYSTEM_APP: Boolean
+    /** 系统应用是否可卸载 */
+    var SYSTEM_APP_ALLOW_UNINSTALL: Boolean
         set(value) {
-            MMKV.defaultMMKV().putBoolean("READ_SYSTEM_APP", value).commit()
-            notifyUpdate()
+            MMKV.defaultMMKV().putBoolean("SYSTEM_APP_ALLOW_UNINSTALL", value).commit()
         }
-        get() = MMKV.defaultMMKV().getBoolean("READ_SYSTEM_APP", true)
-
-
-    fun notifyUpdate() {
-        val value = READ_CHANGE.value
-        if (value == null) {
-            READ_CHANGE.setValue(1)
-        } else {
-            READ_CHANGE.setValue(value + 1)
-        }
-    }
+        get() = MMKV.defaultMMKV().getBoolean("SYSTEM_APP_ALLOW_UNINSTALL", false)
 
 }

@@ -1,10 +1,8 @@
 package com.acap.pkg.manager.adapter.child
 
-import android.widget.Switch
-import android.widget.TextView
 import com.acap.pkg.manager.R
 import com.acap.pkg.manager.adapter.MultipleViewModel
-import com.acap.pkg.manager.base.ReadConfig
+import com.acap.pkg.manager.databinding.VhMenuitemSwitchBinding
 import support.lfp.adapter.BaseViewHolder
 
 
@@ -18,10 +16,11 @@ import support.lfp.adapter.BaseViewHolder
  */
 class VH_MenuItem_Switch(val title: String, val current: () -> Boolean, val action: (Boolean) -> Unit) : MultipleViewModel(R.layout.vh_menuitem_switch) {
     override fun onUpdate(holder: BaseViewHolder<*>) {
-        holder.getView<TextView>(R.id.view_Title).text = title
-        val v_switch = holder.getView<Switch>(R.id.view_Switch)
-        v_switch.setOnCheckedChangeListener(null)
-        v_switch.isChecked = current.invoke()
-        v_switch.setOnCheckedChangeListener { _, isChecked -> action.invoke(isChecked) }
+        val bind = VhMenuitemSwitchBinding.bind(holder.contentView)
+        bind.viewTitle.text = title
+
+        bind.viewSwitch.setOnCheckedChangeListener(null)
+        bind.viewSwitch.isChecked = current.invoke()
+        bind.viewSwitch.setOnCheckedChangeListener { _, isChecked -> action.invoke(isChecked) }
     }
 }

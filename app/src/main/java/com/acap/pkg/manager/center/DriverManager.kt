@@ -106,6 +106,7 @@ object DriverManager {
                 .sortedBy { it.update_time }
                 .also { LogUtils.i("排序:${it}") }
                 .map { StarRecord(it.package_name, it.activity_name, it.star_name) }
+                .filter { it.exists() }
                 .toMutableList()
             )
         }

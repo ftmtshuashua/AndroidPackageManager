@@ -18,3 +18,8 @@ fun main() {
     val starApp = Test(123)
     println(starApp)
 }
+
+
+fun run(count: Int, speak: Int) {
+
+}

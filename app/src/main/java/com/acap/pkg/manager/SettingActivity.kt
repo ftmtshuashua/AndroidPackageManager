@@ -1,14 +1,13 @@
 package com.acap.pkg.manager
 
 import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.acap.pkg.manager.adapter.MultipleViewModel
 import com.acap.pkg.manager.adapter.child.VH_MenuItem_Switch
 import com.acap.pkg.manager.base.BaseActivity
 import com.acap.pkg.manager.base.ReadConfig
+import com.acap.pkg.manager.base.onClick
+import com.acap.pkg.manager.base.setStyle_LinearVertical
+import com.acap.pkg.manager.databinding.ActivitySettingBinding
 import com.weather.utils.adapter.MultipleRecyclerViewAdapter
 
 
@@ -22,20 +21,19 @@ import com.weather.utils.adapter.MultipleRecyclerViewAdapter
  */
 class SettingActivity : BaseActivity() {
 
+    lateinit var mViewBind:ActivitySettingBinding
     val mAdapter by lazy { MultipleRecyclerViewAdapter<MultipleViewModel>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        mViewBind = setViewBinding(ActivitySettingBinding::class.java)
 
-        findViewById<View>(R.id.view_Finish).setOnClickListener { finish() }
+        mViewBind.viewFinish.onClick { finish() }
 
-        val mRecyclerView = findViewById<RecyclerView>(R.id.view_RecyclerView)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mRecyclerView.addItemDecoration(DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL))
-        mRecyclerView.adapter = mAdapter
+        mViewBind.viewRecyclerView.setStyle_LinearVertical()
+        mViewBind.viewRecyclerView.adapter = mAdapter
 
-        mAdapter.add(VH_MenuItem_Switch("是否显示系统应用", { ReadConfig.READ_SYSTEM_APP }) { ReadConfig.READ_SYSTEM_APP = it })
+        mAdapter.add(VH_MenuItem_Switch("系统应用是否可删除", { ReadConfig.SYSTEM_APP_ALLOW_UNINSTALL }) { ReadConfig.SYSTEM_APP_ALLOW_UNINSTALL = it })
 
 
     }

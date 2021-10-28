@@ -31,13 +31,13 @@
         </activity>
         <activity
             android:name=".SettingActivity"
+            android:exported="true"
             android:launchMode="singleTask" />
         <activity
             android:name=".ApkDetailActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".UninstallActivity"
-            android:exported="true"
             android:launchMode="singleTask" />
         <activity
             android:name=".ManagerActivity"

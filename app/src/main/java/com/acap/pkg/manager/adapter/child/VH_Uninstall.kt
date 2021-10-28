@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.acap.pkg.manager.R
 import com.acap.pkg.manager.adapter.MultipleViewModel
+import com.acap.pkg.manager.base.ReadConfig
 import com.acap.pkg.manager.base.onClick
 import com.acap.pkg.manager.center.ActivityRecord
 import com.acap.pkg.manager.center.live.LiveDataOnlyObserve
@@ -36,10 +37,13 @@ class VH_Uninstall(val observe: LiveDataOnlyObserve, val apkInfo: ActivityRecord
     override fun onUpdate(holder: BaseViewHolder<*>) {
         val bind = VhLayoutUninstallBinding.bind(holder.contentView)
 
-        bind.viewUninstall.onClick { Utils.uninstall(it.context, apkInfo.packageName) }
-        bind.viewUninstall.isEnabled = !apkInfo.isSystemApp
+        //是否可卸载
+        val isUninstallAble: Boolean = !apkInfo.isSystemApp || ReadConfig.SYSTEM_APP_ALLOW_UNINSTALL;
 
-        bind.viewRoot.isFocusable = apkInfo.isSystemApp
+        bind.viewUninstall.onClick { Utils.uninstall(it.context, apkInfo.packageName) }
+        bind.viewUninstall.isEnabled = isUninstallAble
+
+        bind.viewRoot.isFocusable = !isUninstallAble
 
         observe.observe(apkInfo.appName, bind.viewAppName.createOrCache { bind.viewAppName.text = it })
 
