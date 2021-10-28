@@ -32,6 +32,9 @@ class UninstallActivity : BaseActivity() {
         findViewById<View>(R.id.view_Finish).onClick { finish() }
 
         mRecyclerView.adapter = mAdapter
+        mAdapter.setOnItemClickListener { _, vh, _, _ ->
+            ApkDetailActivity.start(this, (vh.saveData as VH_Uninstall).apkInfo.packageName)
+        }
 
         DriverManager.getAllActivityRecordObserve(this)
             .onChange {
